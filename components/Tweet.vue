@@ -1,13 +1,13 @@
 <template>
-  <li class="h-32 w-screen border-grey-lighter border-solid border-b">
+  <li class="h-24 w-screen border-grey-lighter border-solid border-b">
     <div class="flex my-4">
       <div class="w-1/5 flex flex-col justify-start items-center">
         <img
-          class="w-16 h-16 rounded-full"
+          class="w-12 h-12 rounded-full"
           src="https://tailwindcss.com/img/jonathan.jpg"
         />
       </div>
-      <div class="mx-2 h-full w-4/5">
+      <div class="mx-2 h-full w-4/5 text-xs">
         <ul class="list-reset flex">
           <li class="font-bold">名前</li>
           <li class="ml-2 text-grey-darker">アカウント名</li>

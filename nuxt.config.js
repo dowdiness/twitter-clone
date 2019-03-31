@@ -1,4 +1,5 @@
 import pkg from './package'
+require('dotenv').config()
 
 export default {
   mode: 'universal',
@@ -29,7 +30,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['~/plugins/vue-fontawesome'],
+  plugins: ['~/plugins/vue-fontawesome', '~/plugins/axios'],
 
   /*
    ** Nuxt.js modules
@@ -37,15 +38,28 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    '@nuxtjs/proxy'
   ],
+  manifest: {
+    name: 'sns-example',
+    lang: 'ja'
+  },
   /*
    ** Axios module configuration
    */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
+    proxy: true
   },
-
+  proxy: {
+    '/api': {
+      target: 'https://sns-example-db82a.appspot.com',
+      pathRewrite: {
+        '^/api': '/'
+      }
+    }
+  },
   /*
    ** Build configuration
    */
@@ -67,6 +81,18 @@ export default {
   },
   serverMiddleware: [
     // API middleware
-    '~/api/index.js'
-  ]
+    '~/api/app.js'
+  ],
+  env: {
+    SECRET: process.env.SECRET || 'sampleSecretKey',
+    APIKEY: process.env.APIKEY,
+    AUTHDOMAIN: process.env.AUTHDOMAIN,
+    DATABASEURL: process.env.DATABASEURL,
+    PROJECTID: process.env.PROJECTID,
+    STORAGEBUCKET: process.env.STORAGEBUCKET,
+    MESSAGINGSENDERID: process.env.MESSAGINGSENDERID,
+    AIRTABLEAPIKEY: process.env.AIRTABLEAPIKEY,
+    AIRTABLEBASE: process.env.AIRTABLEBASE,
+    HASHINGSECRET: process.env.HASHINGSECRET
+  }
 }
