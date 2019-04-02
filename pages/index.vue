@@ -5,10 +5,26 @@
     >
       <div class="h-12 w-screen flex justify-start items-center">
         <img
+          v-if="$store.state.user"
           class="w-8 h-8 rounded-full ml-4"
-          src="https://tailwindcss.com/img/jonathan.jpg"
+          :src="$store.state.user.avatarUrl"
         />
-        <div class="ml-4 font-bold">{{ names }}</div>
+        <div v-if="$store.state.user" class="ml-4 font-bold">
+          {{ $store.state.user.displayName }}
+        </div>
+        <a
+          v-if="!$store.state.auth"
+          class="ml-4 bg-transparent hover:bg-blue text-blue-dark font-semibold hover:text-white py-2 px-4 border border-blue hover:border-transparent rounded"
+          href="/api/auth/login"
+          >Sign In with Google</a
+        >
+        <a
+          v-if="$store.state.auth"
+          class="ml-4 bg-transparent hover:bg-blue text-blue-dark font-semibold hover:text-white py-2 px-4 border border-blue hover:border-transparent rounded"
+          href="/api/auth/logout"
+          >Logout</a
+        >
+        <div>{{ $store.state.user.userId }}</div>
         <div class="ml-auto mr-4">
           <font-awesome-icon icon="cog" size="lg" />
         </div>
@@ -45,23 +61,6 @@ import Tweet from '~/components/Tweet.vue'
 export default {
   components: {
     Tweet
-  },
-  data: function() {
-    return {
-      user: {
-        name: String,
-        avatar: String,
-        tweet: String
-      }
-    }
-  },
-  async asyncData({ $axios }) {
-    const users = await $axios.$get('/api/users')
-    const names = []
-    users.forEach(user => {
-      return names.push(user.name)
-    })
-    return { users, names }
   }
 }
 </script>

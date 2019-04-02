@@ -19,10 +19,4 @@ handlers:
 env_variables:
   HOST: '0.0.0.0'
   NODE_ENV: 'production'
-
-skip_files:
-- node_modules/
-- .gitignore
-- .editorconfig
-- eslintrc.json
-- yarn.lock
+  GCLOUD_STORAGE_BUCKET: sns-images

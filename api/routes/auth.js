@@ -1,8 +1,13 @@
 const { Router } = require('express')
 const Joi = require('joi')
 
+const passport = require('passport')
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
+
 const base = require('../lib/airtable')
 const hash = require('../lib/hash')
+
+const User = require('../models/User')
 
 const router = Router()
 
@@ -19,8 +24,56 @@ const userSchema = Joi.object().keys({
     .required()
 })
 
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: `${process.env.BASE_URL}/callback`
+    },
+    (accessToken, refreshToken, profile, done) => {
+      process.nextTick(() => {
+        User.findOrCreate(profile, (err, user) => {
+          if (err) {
+            return done(err)
+          }
+          return done(null, user)
+        })
+      })
+    }
+  )
+)
+
+passport.serializeUser((user, done) => {
+  done(null, user)
+})
+
+passport.deserializeUser((obj, done) => {
+  done(null, obj)
+})
+
 router.get('/', function(req, res, next) {
-  res.json('From Register')
+  res.json('From Auth')
+})
+
+router.get(
+  '/login',
+  passport.authenticate('google', {
+    scope: ['openid email profile']
+  })
+)
+
+router.get('/callback', passport.authenticate('google'), (req, res) => {
+  res.json({ user: req.user })
+})
+
+router.get('/logout', (req, res) => {
+  req.logout()
+  res.redirect('/')
+})
+
+router.get('/session', (req, res) => {
+  res.json({ user: req.user })
 })
 
 router.post('/', function(req, res, next) {

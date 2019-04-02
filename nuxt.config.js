@@ -79,20 +79,14 @@ export default {
       }
     }
   },
+  router: {
+    middleware: 'session'
+  },
   serverMiddleware: [
     // API middleware
     '~/api/app.js'
   ],
   env: {
-    SECRET: process.env.SECRET || 'sampleSecretKey',
-    APIKEY: process.env.APIKEY,
-    AUTHDOMAIN: process.env.AUTHDOMAIN,
-    DATABASEURL: process.env.DATABASEURL,
-    PROJECTID: process.env.PROJECTID,
-    STORAGEBUCKET: process.env.STORAGEBUCKET,
-    MESSAGINGSENDERID: process.env.MESSAGINGSENDERID,
-    AIRTABLEAPIKEY: process.env.AIRTABLEAPIKEY,
-    AIRTABLEBASE: process.env.AIRTABLEBASE,
-    HASHINGSECRET: process.env.HASHINGSECRET
+    GOOGLE_APPLICATION_CREDENTIALS: '~/appSecret.json'
   }
 }
