@@ -11,7 +11,8 @@ import {
   faComment,
   faRetweet,
   faHeart,
-  faShareAlt
+  faShareAlt,
+  faImage
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -26,7 +27,8 @@ library.add(
   faComment,
   faRetweet,
   faHeart,
-  faShareAlt
+  faShareAlt,
+  faImage
 )
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)

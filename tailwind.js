@@ -45,6 +45,14 @@ View the full documentation at https://tailwindcss.com.
 const colors = {
   transparent: 'transparent',
 
+  'smoke-darkest': 'rgba(0, 0, 0, 0.9)',
+  'smoke-darker': 'rgba(0, 0, 0, 0.75)',
+  'smoke-dark': 'rgba(0, 0, 0, 0.6)',
+  smoke: 'rgba(0, 0, 0, 0.5)',
+  'smoke-light': 'rgba(0, 0, 0, 0.4)',
+  'smoke-lighter': 'rgba(0, 0, 0, 0.25)',
+  'smoke-lightest': 'rgba(0, 0, 0, 0.1)',
+
   black: '#22292f',
   'grey-darkest': '#3d4852',
   'grey-darker': '#606f7b',
@@ -190,6 +198,7 @@ module.exports = {
 
   fonts: {
     sans: [
+      'Montserrat',
       'system-ui',
       'BlinkMacSystemFont',
       '-apple-system',
@@ -201,6 +210,14 @@ module.exports = {
       'Fira Sans',
       'Droid Sans',
       'Helvetica Neue',
+      'Noto Sans JP',
+      'YuGothic',
+      'Yu Gothic Medium',
+      'ヒラギノ角ゴ Pro',
+      'Hiragino Kaku Gothic Pro',
+      'Hiragino Sans',
+      'メイリオ',
+      'Meiryo',
       'sans-serif'
     ],
     serif: [
@@ -213,6 +230,10 @@ module.exports = {
       'Bitstream Vera Serif',
       'Liberation Serif',
       'Georgia',
+      'Noto Serif JP',
+      'Yu Mincho',
+      'YuMincho',
+      'Hiragino Mincho ProN',
       'serif'
     ],
     mono: [

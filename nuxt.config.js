@@ -39,8 +39,18 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
-    '@nuxtjs/proxy'
+    '@nuxtjs/proxy',
+    'nuxt-webfontloader'
   ],
+  webfontloader: {
+    google: {
+      families: [
+        'Montserrat:400,700',
+        'Noto+Sans+JP:400,700',
+        'Noto+Serif+JP:400,700'
+      ]
+    }
+  },
   manifest: {
     name: 'sns-example',
     lang: 'ja'
@@ -86,7 +96,13 @@ export default {
     // API middleware
     '~/api/app.js'
   ],
+  LoadingIndicator: {
+    name: 'circle',
+    color: '#3B8070',
+    background: 'white'
+  },
   env: {
-    GOOGLE_APPLICATION_CREDENTIALS: '~/appSecret.json'
+    GOOGLE_APPLICATION_CREDENTIALS: '~/appSecret.json',
+    GCLOUD_STORAGE_BUCKET: process.env.GCLOUD_STORAGE_BUCKET
   }
 }
