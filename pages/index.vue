@@ -48,12 +48,30 @@
         post-avatar="https://tailwindcss.com/img/jonathan.jpg"
       />
     </div>
-    <modal
-      :toggle-modal="toggleModal"
-      @update:modal="toggleModal = !toggleModal"
-    />
+    <transition name="modal">
+      <modal
+        v-show="toggleModal"
+        :toggle-modal="toggleModal"
+        @update:modal="toggleModal = !toggleModal"
+      />
+    </transition>
   </section>
 </template>
+
+<style scoped>
+.modal-enter-active {
+  transition: all 0.4s ease-out;
+}
+
+.modal-leave-active {
+  transition: all 0.2s ease-out;
+}
+
+.modal-enter,
+.modal-leave-to {
+  opacity: 0;
+}
+</style>
 
 <script>
 import Tweet from '~/components/Tweet.vue'

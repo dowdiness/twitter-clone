@@ -1,4 +1,3 @@
-const Firestore = require('@google-cloud/firestore')
 const Joi = require('joi')
 
 const User = {
@@ -11,7 +10,7 @@ const User = {
       .required(),
     avatarUrl: Joi.string()
   }),
-  findOrCreate: async function(user, callback) {
+  findOrCreate: async function(user, firestore, callback) {
     // Assign User to this.user
     this.user = {
       userId: user.id,
@@ -34,7 +33,6 @@ const User = {
     }
 
     // Get the user document reference and snapshot.
-    const firestore = new Firestore()
     const usersColRef = firestore.collection('users')
     const userDocRef = usersColRef.doc(this.user.userId)
     const userDocSnapshot = await userDocRef.get().catch(err => {
@@ -55,6 +53,15 @@ const User = {
       })
       console.log('Update the existing user', updatedRes.writeTime.toDate())
       this.callback(result.error, this.user)
+    }
+  },
+  getUserRefById: function(id, firestore) {
+    // Get the user document reference and snapshot.
+    try {
+      const userDocRef = firestore.doc(`users/${id}`)
+      return userDocRef
+    } catch (e) {
+      console.error(e)
     }
   }
 }

@@ -5,11 +5,14 @@ const dateFormat = require('date-fns/format')
 
 // Imports the Google Cloud client library
 const { Storage } = require('@google-cloud/storage')
+const Firestore = require('@google-cloud/firestore')
 
 // Instantiate a storage client
 const storage = new Storage()
+const firestore = new Firestore()
 
 const Post = require('../models/Post')
+const User = require('../models/User')
 
 const multer = Multer({
   storage: Multer.memoryStorage(),
@@ -23,13 +26,32 @@ const bucket = storage.bucket(process.env.GCLOUD_STORAGE_BUCKET)
 
 const router = Router()
 
+// eslint-disable-next-line require-await
+async function asyncMap(array, operation) {
+  // eslint-disable-next-line no-return-await
+  return Promise.all(array.map(async item => await operation(item)))
+}
+
 /* GET all posts. */
 router.get('/', function(req, res, next) {
-  Post.getAllPosts(function(err, posts) {
+  Post.getAllPosts(firestore, function(err, posts) {
     if (!err) {
-      res.status(200).json(posts)
+      if (posts) {
+        asyncMap(posts, async post => {
+          post.createTime = dateFormat(
+            post.createTime.toDate(),
+            'YYYY/MM/DD HH:mm:ss'
+          )
+          const userSnap = await post.userRef.get()
+          post.avatarUrl = userSnap.get('avatarUrl')
+        }).then(_ => {
+          return res.status(200).json(posts)
+        })
+      } else {
+        return res.status(204).json(null)
+      }
     } else {
-      res.status(500).send(err)
+      return res.status(500).send(err)
     }
   })
 })
@@ -40,6 +62,7 @@ router.post('/', multer.single('image'), function(req, res, next) {
     res.status(403).json('ログインしてからTweetして下さい')
     return
   }
+  const userRef = User.getUserRefById(req.user.userId, firestore)
   const createTime = new Date()
   if (req.file) {
     const dateName = dateFormat(createTime, 'YYMMDDHHmmss')
@@ -56,39 +79,40 @@ router.post('/', multer.single('image'), function(req, res, next) {
         `https://storage.googleapis.com/${bucket.name}/${blob.name}`
       )
       this.post = {
-        userId: req.user.userId,
+        userRef: userRef,
         displayName: req.user.displayName,
         createTime: createTime,
         imageUrl: imageUrl,
         postContent: req.body.postContent
       }
-      Post.createPost(this.post, function(err, record) {
+      Post.createPost(this.post, firestore, function(err, createdPost) {
         if (err) {
           console.error(err)
-          console.log(record)
+          console.log(createdPost)
           res.status(500).send(err)
         } else {
-          res.status(200).send(record)
+          res.status(200).send(createdPost)
         }
       })
     })
     blobStream.end(req.file.buffer)
   } else {
-    console.log('Tweet without image')
+    console.log('Post without image')
     this.post = {
-      userId: req.user.userId,
+      userRef: userRef,
       displayName: req.user.displayName,
       createTime: createTime,
       imageUrl: null,
       postContent: req.body.postContent
     }
-    Post.createPost(this.post, function(err, record) {
+    console.log(this.post)
+    Post.createPost(this.post, firestore, function(err, createdPost) {
       if (err) {
         console.error(err)
-        console.log(record)
+        console.log(createdPost)
         res.status(500).send(err)
       } else {
-        res.status(200).send(record)
+        res.status(200).send(createdPost)
       }
     })
   }

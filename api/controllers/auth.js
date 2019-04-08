@@ -1,28 +1,14 @@
 const { Router } = require('express')
-const Joi = require('joi')
 
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
-
-const base = require('../lib/airtable')
-const hash = require('../lib/hash')
+const Firestore = require('@google-cloud/firestore')
 
 const User = require('../models/User')
 
 const router = Router()
 
-const userSchema = Joi.object().keys({
-  userName: Joi.string()
-    .min(3)
-    .max(30)
-    .required(),
-  password: Joi.string()
-    .regex(/^[a-zA-Z0-9]{3,30}$/)
-    .required(),
-  email: Joi.string()
-    .email({ minDomainAtoms: 2 })
-    .required()
-})
+const firestore = new Firestore()
 
 passport.use(
   new GoogleStrategy(
@@ -33,7 +19,7 @@ passport.use(
     },
     (accessToken, refreshToken, profile, done) => {
       process.nextTick(() => {
-        User.findOrCreate(profile, (err, user) => {
+        User.findOrCreate(profile, firestore, (err, user) => {
           if (err) {
             return done(err)
           }
@@ -74,38 +60,6 @@ router.get('/logout', (req, res) => {
 
 router.get('/session', (req, res) => {
   res.json({ user: req.user })
-})
-
-router.post('/', function(req, res, next) {
-  const userName = req.body.userName
-  const password = req.body.password
-  const email = req.body.email
-
-  const result = Joi.validate(
-    { userName: userName, password: password, email: email },
-    userSchema
-  )
-
-  if (!result.error) {
-    const hashedPassword = hash(password)
-    const userObj = {
-      userName: userName,
-      hashedPassword: hashedPassword,
-      email: email
-    }
-    base('users').create(userObj, function(_err, record) {
-      if (!_err) {
-        console.log(record.getId())
-        res.json(record.getId())
-      } else {
-        console.error(_err)
-        res.status(500).send(_err)
-      }
-    })
-  } else {
-    console.error(result.error)
-    res.status(422).send(result.error)
-  }
 })
 
 module.exports = router

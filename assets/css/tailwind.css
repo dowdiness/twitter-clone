@@ -13,6 +13,14 @@
 body *{
   @apply font-sans;
 }
+
+.page-enter-active, .page-leave-active {
+  transition: opacity .5s
+}
+.page-enter, .page-leave-active {
+  opacity: 0
+}
+
 /**
  * This injects any component classes registered by plugins.
  *

@@ -7,12 +7,12 @@
     >
       <div class="flex my-4">
         <div class="w-1/5 flex flex-col justify-start items-center">
-          <img class="w-12 h-12 rounded-full" :src="avatarUrl" />
+          <img class="w-12 h-12 rounded-full" :src="post.avatarUrl" />
         </div>
-        <div class="mx-2 h-full w-4/5 text-xs">
+        <div class="mx-2 h-full w-4/5 text-sm">
           <ul class="list-reset flex">
             <li class="font-bold">{{ post.displayName }}</li>
-            <li class="ml-2 text-grey-darker">{{ postTime }}</li>
+            <li class="ml-2 text-grey-darker">{{ post.createTime }}</li>
           </ul>
           <div class="my-2 font-serif">
             {{ post.postContent }}
