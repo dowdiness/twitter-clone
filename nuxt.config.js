@@ -96,13 +96,14 @@ export default {
     // API middleware
     '~/api/app.js'
   ],
-  LoadingIndicator: {
-    name: 'circle',
-    color: '#3B8070',
-    background: 'white'
-  },
   env: {
     GOOGLE_APPLICATION_CREDENTIALS: '~/appSecret.json',
-    GCLOUD_STORAGE_BUCKET: process.env.GCLOUD_STORAGE_BUCKET
+    GCLOUD_STORAGE_BUCKET: process.env.GCLOUD_STORAGE_BUCKET,
+    APIKEY: process.env.APIKEY,
+    AUTHDOMAIN: process.env.AUTHDOMAIN,
+    DATABASEURL: process.env.DATABASEURL,
+    PROJECTID: process.env.PROJECTID,
+    STORAGEBUCKET: process.env.STORAGEBUCKET,
+    MESSAGINGSENDERID: process.env.MESSAGINGSENDERID
   }
 }

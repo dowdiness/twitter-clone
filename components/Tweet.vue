@@ -3,11 +3,11 @@
     <li
       v-for="post in posts"
       :key="post.userId"
-      class="h-24 w-screen border-grey-lighter border-solid border-b"
+      class="w-screen lg:w-full border-grey-lighter border-solid border-b lg:border-l"
     >
-      <div class="flex my-4">
+      <div class="flex py-4">
         <div class="w-1/5 flex flex-col justify-start items-center">
-          <img class="w-12 h-12 rounded-full" :src="post.avatarUrl" />
+          <img class="w-12 h-12 rounded-full" :src="post.userRef.avatarUrl" />
         </div>
         <div class="mx-2 h-full w-4/5 text-sm">
           <ul class="list-reset flex">

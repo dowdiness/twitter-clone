@@ -38,10 +38,6 @@ router.get('/', function(req, res, next) {
     if (!err) {
       if (posts) {
         asyncMap(posts, async post => {
-          post.createTime = dateFormat(
-            post.createTime.toDate(),
-            'YYYY/MM/DD HH:mm:ss'
-          )
           const userSnap = await post.userRef.get()
           post.avatarUrl = userSnap.get('avatarUrl')
         }).then(_ => {
@@ -63,10 +59,10 @@ router.post('/', multer.single('image'), function(req, res, next) {
     return
   }
   const userRef = User.getUserRefById(req.user.userId, firestore)
-  const createTime = new Date()
+  const initDate = new Date()
+  const createTime = dateFormat(initDate, 'yyyy/MM/dd-HH:mm:ss')
   if (req.file) {
-    const dateName = dateFormat(createTime, 'YYMMDDHHmmss')
-    const imageName = dateName + '_' + req.file.originalname
+    const imageName = createTime + '_' + req.file.originalname
     // Create a new blob in the bucket and upload the file data.
     const blob = bucket.file(imageName)
     const blobStream = blob.createWriteStream()
@@ -105,7 +101,6 @@ router.post('/', multer.single('image'), function(req, res, next) {
       imageUrl: null,
       postContent: req.body.postContent
     }
-    console.log(this.post)
     Post.createPost(this.post, firestore, function(err, createdPost) {
       if (err) {
         console.error(err)

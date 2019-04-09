@@ -42,7 +42,7 @@
         :class="{ disableBtn: isDisable }"
         class="upload bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
         type="button"
-        @click="onUpload"
+        @click="upByClient"
       >
         アップロード
       </button>
@@ -135,6 +135,16 @@ export default {
         this.uploadImage = null
         this.message = null
       }
+    },
+    async upByClient(event) {
+      this.$emit('update:modal')
+      event.preventDefault()
+      await this.$store.dispatch('ADD_POST', {
+        postContent: this.postContent
+      })
+      this.postContent = ''
+      this.uploadImage = null
+      this.message = null
     }
   }
 }

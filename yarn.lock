@@ -1485,6 +1485,11 @@
     mustache "^2.3.0"
     stack-trace "0.0.10"
 
+"@posva/vuefire-core@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@posva/vuefire-core/-/vuefire-core-1.1.0.tgz#4a3bf8a2719172325c6a6dae791feb44b485e8ff"
+  integrity sha512-Z/jwkwyRUwC7KHpy7/ptjQwv3c0uDkAL9rmtYw8KNAK7ZKUFNAj4gqdMNgNbfmXykRLDYwtYDwuBWdtH2jR02Q==
+
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@protobufjs/aspromise/-/aspromise-1.1.2.tgz#9b8b0cc663d669a7d8f6f5d0893a14d348f30fbf"
@@ -3366,10 +3371,10 @@ cyclist@~0.2.2:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-0.2.2.tgz#1b33792e11e914a2fd6d6ed6447464444e5fa640"
   integrity sha1-GzN5LhHpFKL9bW7WRHRkRE5fpkA=
 
-date-fns@^1.30.1:
-  version "1.30.1"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.30.1.tgz#2e71bf0b119153dbb4cc4e88d9ea5acfb50dc05c"
-  integrity sha512-hBSVCvSmWC+QypYObzwGOd9wqdDpOt+0wl0KbU+R+uuZBS1jN8VsD1ss3irQDknRj5NvxiTF6oj/nDRnN/UQNw==
+date-fns@^2.0.0-alpha.27:
+  version "2.0.0-alpha.27"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-alpha.27.tgz#5ecd4204ef0e7064264039570f6e8afbc014481c"
+  integrity sha512-cqfVLS+346P/Mpj2RpDrBv0P4p2zZhWWvfY5fuWrXNR/K38HaAGEkeOwb47hIpQP9Jr/TIxjZ2/sNMQwdXuGMg==
 
 date-now@^0.1.4:
   version "0.1.4"
@@ -5470,6 +5475,11 @@ jimp@^0.5.0:
     "@jimp/plugins" "^0.5.5"
     "@jimp/types" "^0.5.4"
     core-js "^2.5.7"
+
+joi-browser@^13.4.0:
+  version "13.4.0"
+  resolved "https://registry.yarnpkg.com/joi-browser/-/joi-browser-13.4.0.tgz#b72ba61b610e3f58e51b563a14e0f5225cfb6896"
+  integrity sha512-TfzJd2JaJ/lg/gU+q5j9rLAjnfUNF9DUmXTP9w+GfmG79LjFOXFeM7hIFuXCBcZCivUDFwd9l1btTV9rhHumtQ==
 
 joi@^11.1.1:
   version "11.4.0"
@@ -9561,6 +9571,13 @@ vuex@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.1.0.tgz#634b81515cf0cfe976bd1ffe9601755e51f843b9"
   integrity sha512-mdHeHT/7u4BncpUZMlxNaIdcN/HIt1GsGG5LKByArvYG/v6DvHcOxvDCts+7SRdCoIRGllK8IMZvQtQXLppDYg==
+
+vuexfire@^3.0.0-alpha.15:
+  version "3.0.0-alpha.15"
+  resolved "https://registry.yarnpkg.com/vuexfire/-/vuexfire-3.0.0-alpha.15.tgz#3e9c2df4079253d99d0212f177c9638caedab2f1"
+  integrity sha512-x0hvDEsyVMjZJUB6aBtSjP4gObSZ6Z69UIMqZg6sdi5/7g5ENPhV1Ftj0JEzRxTen/Oo3DKP55UDRqvzLXg0EQ==
+  dependencies:
+    "@posva/vuefire-core" "^1.1.0"
 
 walkdir@^0.3.0, walkdir@^0.3.2:
   version "0.3.2"

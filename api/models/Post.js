@@ -6,7 +6,7 @@ const Post = {
     displayName: Joi.string()
       .min(1)
       .required(),
-    createTime: Joi.any().required(),
+    createTime: Joi.string().required(),
     imageUrl: Joi.string()
       .allow(null)
       .uri(),

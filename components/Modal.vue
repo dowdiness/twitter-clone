@@ -1,18 +1,34 @@
 <template>
-  <div
-    class="fixed pin z-50 overflow-auto bg-smoke-light flex"
-    @click.self="$emit('update:modal')"
-  >
+  <transition name="modal">
     <div
-      :class="{ fadeOut: !toggleModal }"
-      class="fadeIn relative p-8 bg-white w-full max-w-md m-auto flex-col flex"
+      v-show="toggleModal"
+      class="fixed pin z-50 overflow-auto bg-smoke-light flex"
+      @click.self="$emit('update:modal')"
     >
-      <post-tweet @update:modal="$emit('update:modal')" />
+      <div
+        :class="{ fadeOut: !toggleModal }"
+        class="fadeIn relative p-8 bg-white w-full max-w-md m-auto flex-col flex"
+      >
+        <post-tweet @update:modal="$emit('update:modal')" />
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <style scoped>
+.modal-enter-active {
+  transition: all 0.4s ease-out;
+}
+
+.modal-leave-active {
+  transition: all 0.2s ease-out;
+}
+
+.modal-enter,
+.modal-leave-to {
+  opacity: 0;
+}
+
 .fadeIn {
   animation: fadeIn ease-out 0.7s;
 }
