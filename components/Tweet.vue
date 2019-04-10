@@ -2,19 +2,23 @@
   <ul class="list-reset">
     <li
       v-for="post in posts"
-      :key="post.userId"
+      :key="post.createTime"
       class="w-screen lg:w-full border-grey-lighter border-solid border-b lg:border-l"
     >
       <div class="flex py-4">
         <div class="w-1/5 flex flex-col justify-start items-center">
-          <img class="w-12 h-12 rounded-full" :src="post.userRef.avatarUrl" />
+          <img
+            class="w-12 h-12 rounded-full"
+            :src="post.userRef.avatarUrl"
+            alt="userAvatar"
+          />
         </div>
-        <div class="mx-2 h-full w-4/5 text-sm">
+        <div class="pl-2 pr-4 h-full w-4/5 text-sm">
           <ul class="list-reset flex">
             <li class="font-bold">{{ post.displayName }}</li>
             <li class="ml-2 text-grey-darker">{{ post.createTime }}</li>
           </ul>
-          <div class="my-2 font-serif">
+          <div class="break-words whitespace-normal my-2 font-serif">
             {{ post.postContent }}
           </div>
         </div>
@@ -24,21 +28,11 @@
 </template>
 
 <script>
-import ninja from '~/static/27-ninja.svg'
-
 export default {
   props: {
     posts: {
       type: Array,
       default: null
-    },
-    postTime: {
-      type: String,
-      default: '20190403'
-    },
-    avatarUrl: {
-      type: String,
-      default: ninja
     }
   }
 }

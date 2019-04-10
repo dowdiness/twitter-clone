@@ -12,7 +12,7 @@
       v-model.trim="postContent"
       cols="20"
       rows="5"
-      placeholder="いまどうしてる？"
+      placeholder="What's happing?"
       class="resize-none border border-gray my-6"
     ></textarea>
     <span
@@ -20,7 +20,8 @@
       class="popup absolute p-2 bg-blue text-white rounded"
       >画像を追加
     </span>
-    <div class="flex justify-between">
+    <div class="flex justify-end">
+      <!--
       <input
         ref="imageInput"
         class="hidden"
@@ -38,13 +39,14 @@
       >
         <font-awesome-icon icon="image" size="lg" />
       </button>
+      -->
       <button
         :class="{ disableBtn: isDisable }"
         class="upload bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
         type="button"
         @click="upByClient"
       >
-        アップロード
+        Post
       </button>
     </div>
   </section>
@@ -95,7 +97,7 @@ export default {
       isDisable: true,
       postContent: '',
       uploadImage: null,
-      message: '入力して下さい'
+      message: 'Start chatting!'
     }
   },
   watch: {
@@ -110,7 +112,7 @@ export default {
     },
     async onUpload(event) {
       if (this.postContent === '') {
-        this.message = 'テキストを入力して下さい'
+        this.message = 'Please type something!'
       } else {
         this.$emit('update:modal')
         event.preventDefault()
@@ -144,7 +146,7 @@ export default {
       })
       this.postContent = ''
       this.uploadImage = null
-      this.message = null
+      this.message = 'Start chatting!'
     }
   }
 }

@@ -37,7 +37,11 @@ export const mutations = {
   },
   logout(state) {
     state.auth = false
-    state.user = null
+    state.user = {
+      userId: null,
+      displayName: null,
+      avatarUrl: null
+    }
   },
   addPost(state, payload) {
     if (state.user.userId) {

@@ -13,7 +13,8 @@ import {
   faHeart,
   faShareAlt,
   faImage,
-  faTimes
+  faTimes,
+  faPlus
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -30,7 +31,8 @@ library.add(
   faHeart,
   faShareAlt,
   faImage,
-  faTimes
+  faTimes,
+  faPlus
 )
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)

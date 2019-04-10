@@ -198,7 +198,6 @@ module.exports = {
 
   fonts: {
     sans: [
-      'Montserrat',
       'system-ui',
       'BlinkMacSystemFont',
       '-apple-system',
@@ -210,7 +209,6 @@ module.exports = {
       'Fira Sans',
       'Droid Sans',
       'Helvetica Neue',
-      'Noto Sans JP',
       'YuGothic',
       'Yu Gothic Medium',
       'ヒラギノ角ゴ Pro',
@@ -230,7 +228,6 @@ module.exports = {
       'Bitstream Vera Serif',
       'Liberation Serif',
       'Georgia',
-      'Noto Serif JP',
       'Yu Mincho',
       'YuMincho',
       'Hiragino Mincho ProN',
@@ -533,6 +530,7 @@ module.exports = {
     '10': '2.5rem',
     '12': '3rem',
     '16': '4rem',
+    '20': '5rem',
     '24': '6rem',
     '32': '8rem',
     '48': '12rem',

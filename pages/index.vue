@@ -1,85 +1,106 @@
 <template>
-  <section
-    class="min-h-screen flex flex-col lg:flex-row justify-start items-center lg:items-start"
-  >
-    <div
-      v-if="$store.state.auth"
-      class="h-24 lg:h-screen lg:m-auto fixed w-screen lg:w-1/4 bg-white flex flex-col justify-start lg:justify-center items-center border-grey-light lg:border-white border-solid border-b"
-    >
-      <div
-        class="h-12 lg:h-auto w-screen lg:w-full flex lg:flex-col justify-between items-center"
+  <div>
+    <transition name="fade" mode="out-in">
+      <loader v-if="isLoading" key="loading" />
+      <section
+        v-else
+        key="main"
+        class="min-h-screen flex flex-col lg:flex-row justify-start items-center lg:items-start"
       >
-        <img
-          class="w-8 h-8 lg:w-24 lg:h-24 rounded-full ml-4 lg:m-auto object-cover"
-          :src="$store.state.user.avatarUrl"
-        />
-        <div
-          v-if="$store.state.auth"
-          class="mr-4 lg:mx-4 lg:mt-12 font-bold text-center lg:text-xl"
-        >
-          {{ $store.state.user.displayName }}
+        <component :is="header" @update:modal="toggleModal = !toggleModal" />
+        <div class="h-full w-screen lg:w-3/4 mt-20 ml-auto lg:mt-0">
+          <tweet :posts="$store.state.posts" />
         </div>
-      </div>
-      <div
-        class="h-12 lg:h-32 lg:mt-12 w-screen lg:w-full flex lg:flex-col justify-between items-center"
-      >
+        <modal
+          :toggle-modal="toggleModal"
+          @update:modal="toggleModal = !toggleModal"
+        />
         <button
-          class="ml-4 lg:mx-4 lg:mt-4 lg:w-5/6 bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 border border-blue rounded"
+          v-show="$store.state.auth && isMobile"
+          aria-label="post"
+          type="button"
+          class="mr-4 mb-4 w-12 h-12 fixed pin-r pin-b bg-blue hover:bg-blue-dark text-white font-hairline py-2 px-2 border border-blue rounded-full"
           @click="toggleModal = !toggleModal"
         >
-          Tweet
+          <font-awesome-icon icon="plus" size="2x" />
         </button>
-        <div class="ml-auto mr-4 lg:mx-4 lg:mb-4 lg:w-5/6">
-          <a
-            v-if="$store.state.auth"
-            class="bg-transparent lg:block hover:bg-blue text-blue-dark font-semibold hover:text-white text-center py-2 px-4 border border-blue hover:border-transparent rounded"
-            href="/api/auth/logout"
-            >Logout</a
-          >
-        </div>
-      </div>
-    </div>
-    <div
-      v-else
-      class="h-24 lg:h-screen lg:m-auto fixed bg-white w-screen lg:w-1/4 flex justify-center items-center border-grey-light border-solid border-b lg:border-white"
-    >
-      <a
-        v-if="!$store.state.auth"
-        class="bg-transparent hover:bg-blue text-blue-dark font-semibold hover:text-white py-2 px-4 border border-blue hover:border-transparent rounded"
-        href="/api/auth/login"
-        >Sign In with Google</a
-      >
-    </div>
-    <div class="h-full w-screen lg:w-3/4 mt-24 ml-auto lg:mt-0">
-      <tweet
-        :posts="$store.state.posts"
-        post-avatar="https://tailwindcss.com/img/jonathan.jpg"
-      />
-    </div>
-    <modal
-      :toggle-modal="toggleModal"
-      @update:modal="toggleModal = !toggleModal"
-    />
-  </section>
+      </section>
+    </transition>
+  </div>
 </template>
 
 <script>
+// import debounce from 'lodash/debounce'
+import Loader from '~/components/Loader.vue'
 import Tweet from '~/components/Tweet.vue'
 import Modal from '~/components/Modal.vue'
+import MobileHeader from '~/components/MobileHeader.vue'
+import DesktopHeader from '~/components/DesktopHeader.vue'
+import SignInHeader from '~/components/SignInHeader.vue'
 
 export default {
   components: {
+    Loader,
     Tweet,
-    Modal
+    Modal,
+    MobileHeader,
+    DesktopHeader,
+    SignInHeader
   },
   data() {
     return {
       toggleModal: false,
-      posts: null
+      width: null,
+      isMobile: false,
+      isLoading: true,
+      header: null
     }
   },
   async mounted() {
     await this.$store.dispatch('INIT_POSTS')
+    this.width = window.innerWidth
+    if (this.width < 992) {
+      this.isMobile = true
+      this.header = this.$store.state.auth ? 'mobile-header' : 'sign-in-header'
+    } else {
+      this.isMobile = false
+      this.header = this.$store.state.auth ? 'desktop-header' : 'sign-in-header'
+    }
+    window.addEventListener('resize', this.handleResize, 400)
+    setTimeout(_ => {
+      this.isLoading = false
+    }, 500)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize, 400)
+  },
+  methods: {
+    handleResize: function() {
+      this.width = window.innerWidth
+      if (this.width < 992) {
+        this.isMobile = true
+        this.header = this.$store.state.auth
+          ? 'mobile-header'
+          : 'sign-in-header'
+      } else {
+        this.isMobile = false
+        this.header = this.$store.state.auth
+          ? 'desktop-header'
+          : 'sign-in-header'
+      }
+    }
   }
 }
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  will-change: opacity;
+  transition: opacity 1s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

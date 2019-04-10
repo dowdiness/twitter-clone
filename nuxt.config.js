@@ -40,17 +40,8 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     '@nuxtjs/proxy',
-    'nuxt-webfontloader'
+    'nuxt-purgecss'
   ],
-  webfontloader: {
-    google: {
-      families: [
-        'Montserrat:400,700',
-        'Noto+Sans+JP:400,700',
-        'Noto+Serif+JP:400,700'
-      ]
-    }
-  },
   manifest: {
     name: 'sns-example',
     lang: 'ja'

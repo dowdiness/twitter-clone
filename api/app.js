@@ -1,5 +1,15 @@
+const path = require('path')
+const serviceAccount = require(path.join(__dirname, '/../appSecret.json'))
 const express = require('express')
 const session = require('express-session')
+const admin = require('firebase-admin')
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'https://sns-example-db82a.firebaseio.com'
+})
+const database = admin.firestore()
+const FirestoreStore = require('firestore-store')(session)
 
 const logger = require('morgan')
 const passport = require('passport')
@@ -12,6 +22,9 @@ const app = express()
 // Express session
 app.use(
   session({
+    store: new FirestoreStore({
+      database: database
+    }),
     secret: process.env.SECRET || 'secret',
     resave: true,
     saveUninitialized: false,
