@@ -1,15 +1,15 @@
 <template>
   <transition name="modal">
     <div
-      v-show="toggleModal"
+      v-show="toggleUserModal"
       class="fixed pin z-50 overflow-auto bg-smoke-light flex"
-      @click.self="$emit('update:modal')"
+      @click.self="$emit('update:usermodal')"
     >
       <div
-        :class="{ fadeOut: !toggleModal }"
-        class="fadeIn relative p-6 pt-8 md:p-8 bg-white w-full max-w-md m-auto flex-col flex shadow-md"
+        :class="{ fadeOut: !toggleUserModal }"
+        class="fadeIn relative p-4 bg-white w-full max-w-md m-auto flex-col flex shadow-md"
       >
-        <post-tweet @update:modal="$emit('update:modal')" />
+        <profile @update:usermodal="$emit('update:usermodal')" />
       </div>
     </div>
   </transition>
@@ -57,14 +57,14 @@
 </style>
 
 <script>
-import PostTweet from '~/components/PostTweet.vue'
+import Profile from '~/components/Profile.vue'
 
 export default {
   components: {
-    PostTweet
+    Profile
   },
   props: {
-    toggleModal: {
+    toggleUserModal: {
       type: Boolean,
       default: false
     }

@@ -13,7 +13,7 @@
       cols="20"
       rows="5"
       placeholder="What's happing?"
-      class="resize-none border border-gray my-6"
+      class="resize-none border border-gray my-6 mb-4 md:my-6"
     ></textarea>
     <span
       :class="{ popuped: isPopup }"
@@ -61,7 +61,7 @@
   opacity: 0;
   top: 160px;
   left: 5px;
-  transition: all 0.4s;
+  transition: all 0.3s;
 }
 
 .popuped {

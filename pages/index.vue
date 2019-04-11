@@ -7,7 +7,11 @@
         key="main"
         class="min-h-screen flex flex-col lg:flex-row justify-start items-center lg:items-start"
       >
-        <component :is="header" @update:modal="toggleModal = !toggleModal" />
+        <component
+          :is="header"
+          @update:modal="toggleModal = !toggleModal"
+          @update:usermodal="toggleUserModal = !toggleUserModal"
+        />
         <div class="h-full w-screen lg:w-3/4 mt-20 ml-auto lg:mt-0">
           <tweet :posts="$store.state.posts" />
         </div>
@@ -15,11 +19,15 @@
           :toggle-modal="toggleModal"
           @update:modal="toggleModal = !toggleModal"
         />
+        <user-modal
+          :toggle-user-modal="toggleUserModal"
+          @update:usermodal="toggleUserModal = !toggleUserModal"
+        />
         <button
           v-show="$store.state.auth && isMobile"
           aria-label="post"
           type="button"
-          class="mr-4 mb-4 w-12 h-12 fixed pin-r pin-b bg-blue hover:bg-blue-dark text-white font-hairline py-2 px-2 border border-blue rounded-full"
+          class="mr-4 mb-4 w-12 h-12 fixed pin-r pin-b bg-blue hover:bg-blue-dark text-white font-hairline py-2 px-2 border border-blue rounded-full transition"
           @click="toggleModal = !toggleModal"
         >
           <font-awesome-icon icon="plus" size="2x" />
@@ -34,6 +42,7 @@
 import Loader from '~/components/Loader.vue'
 import Tweet from '~/components/Tweet.vue'
 import Modal from '~/components/Modal.vue'
+import UserModal from '~/components/UserModal.vue'
 import MobileHeader from '~/components/MobileHeader.vue'
 import DesktopHeader from '~/components/DesktopHeader.vue'
 import SignInHeader from '~/components/SignInHeader.vue'
@@ -43,6 +52,7 @@ export default {
     Loader,
     Tweet,
     Modal,
+    UserModal,
     MobileHeader,
     DesktopHeader,
     SignInHeader
@@ -50,6 +60,7 @@ export default {
   data() {
     return {
       toggleModal: false,
+      toggleUserModal: false,
       width: null,
       isMobile: false,
       isLoading: true,
@@ -102,5 +113,9 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.transition {
+  transition: all 0.3s ease;
 }
 </style>

@@ -6,7 +6,7 @@ export default async ({ app, store, route, redirect }) => {
   const res = await app.$axios.get('/api/auth/session')
   if (res.data.user) {
     store.commit('login', res.data.user)
-    if (route.path !== '/') {
+    if (route.path === '/callback') {
       return redirect('/')
     }
   } else {
