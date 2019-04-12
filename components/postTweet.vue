@@ -139,6 +139,7 @@ export default {
       }
     },
     async upByClient(event) {
+      this.$toast.show('Sending your post...', { icon: 'check' })
       this.$emit('update:modal')
       event.preventDefault()
       await this.$store.dispatch('ADD_POST', {
@@ -147,6 +148,10 @@ export default {
       this.postContent = ''
       this.uploadImage = null
       this.message = 'Start chatting!'
+      this.$toast.clear()
+      this.$toast
+        .success('Successfully posted!', { icon: 'check' })
+        .goAway(1500)
     }
   }
 }

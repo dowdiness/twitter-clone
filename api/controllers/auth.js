@@ -55,7 +55,7 @@ router.get('/callback', passport.authenticate('google'), (req, res) => {
 
 router.get('/logout', (req, res) => {
   req.logout()
-  res.redirect('/')
+  res.redirect('/?logout=true')
 })
 
 router.get('/session', (req, res) => {

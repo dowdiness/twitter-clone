@@ -27,7 +27,7 @@
       />
       <img
         class="w-32 h-32 rounded-full m-auto object-cover pin"
-        :src="imageUrl"
+        :src="imageUrl | addQuery"
       />
     </button>
     <div class="m-4 p-2 bg-grey-lightest w-full max-w-xs rounded">
@@ -50,6 +50,7 @@
     <button
       class="w-full max-w-xs mb-4 bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
       type="button"
+      @click="onSave"
     >
       Save
     </button>
@@ -58,15 +59,20 @@
 
 <script>
 export default {
+  filters: {
+    addQuery: function(avatarUrl) {
+      if (!avatarUrl) return ''
+      const isCloudStorage = /^https:\/\/storage.googleapis.com/.test(avatarUrl)
+      return isCloudStorage ? `${avatarUrl}?${new Date().getTime()}` : avatarUrl
+    }
+  },
   data: function() {
     return {
       user: {
         name: String,
-        avatar: String,
-        tweet: String
+        avatarImage: null
       },
       response: null,
-      uploadImage: null,
       imageUrl: '',
       toggleFocus: false
     }
@@ -79,9 +85,47 @@ export default {
     onFileSelected(event) {
       event.preventDefault()
       if (event.target.files[0]) {
-        this.uploadImage = event.target.files[0]
-        this.imageUrl = window.URL.createObjectURL(this.uploadImage)
+        this.user.avatarImage = event.target.files[0]
+        this.imageUrl = window.URL.createObjectURL(this.user.avatarImage)
       }
+    },
+    async onSave() {
+      this.$emit('update:usermodal')
+      this.$toast.show('Saving new profile...', { icon: { name: 'check' } })
+      const form = new FormData()
+      form.append('userId', this.$store.state.user.userId)
+      form.append('displayName', this.user.name)
+      if (this.user.avatarImage) {
+        form.append(
+          'image',
+          this.user.avatarImage,
+          this.$store.state.user.userId
+        )
+      }
+      const res = await this.$axios
+        .post(`/api/users`, form, {
+          headers: {
+            'content-type': 'multipart/form-data'
+          }
+        })
+        .catch(err => {
+          console.log(err.response.data)
+          this.$toast.error('Error while saving', { icon: 'error_outline' })
+        })
+      console.log(res)
+      const user = {
+        userId: res.data.userId,
+        displayName: res.data.displayName,
+        avatarUrl: res.data.avatarUrl
+      }
+      this.$store.commit('login', user)
+      await this.$store.dispatch('INIT_POSTS')
+      this.imageUrl = this.$store.state.user.avatarUrl
+      this.$emit('update:image')
+      this.$toast.clear()
+      this.$toast
+        .success('Successfully saved!', { icon: { name: 'check' } })
+        .goAway(1500)
     },
     onFocus() {
       this.toggleFocus = true

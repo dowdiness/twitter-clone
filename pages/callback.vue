@@ -24,7 +24,7 @@ export default {
       avatarUrl: res.data.user.avatarUrl
     }
     this.$store.commit('login', user)
-    this.$router.push('/')
+    this.$router.push({ path: '/', query: { login: 'true' } })
   }
 }
 </script>

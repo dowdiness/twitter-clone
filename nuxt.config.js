@@ -47,8 +47,22 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     '@nuxtjs/proxy',
+    '@nuxtjs/toast',
     'nuxt-purgecss'
   ],
+  toast: {
+    position: 'bottom-center',
+    iconPack: 'fontawesome',
+    register: [
+      {
+        name: 'my-error',
+        message: 'Oops...Something went wrong',
+        options: {
+          type: 'error'
+        }
+      }
+    ]
+  },
   manifest: {
     name: 'sns-example',
     lang: 'ja'

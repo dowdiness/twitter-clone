@@ -45,7 +45,7 @@
         >
           <img
             class="w-12 h-12 rounded-full object-cover"
-            :src="$store.state.user.avatarUrl"
+            :src="$store.state.user.avatarUrl | addQuery"
             alt="userAvatar"
           />
         </button>
@@ -102,6 +102,19 @@
 
 <script>
 export default {
+  filters: {
+    addQuery: function(avatarUrl) {
+      if (!avatarUrl) return ''
+      const isCloudStorage = /^https:\/\/storage.googleapis.com/.test(avatarUrl)
+      return isCloudStorage ? `${avatarUrl}?${new Date().getTime()}` : avatarUrl
+    }
+  },
+  props: {
+    updateTime: {
+      type: Date,
+      default: new Date()
+    }
+  },
   data() {
     return {
       isPopup: false

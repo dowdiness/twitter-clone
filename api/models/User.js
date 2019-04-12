@@ -47,12 +47,8 @@ const User = {
       console.log('New user is created at: ' + setRes.writeTime.toDate())
       this.callback(result.error, this.user)
     } else {
-      // Update an existing user document, if user document is alredeay existed.
-      const updatedRes = await userDocRef.update(this.user).catch(err => {
-        console.log(err)
-      })
-      console.log('Update the existing user', updatedRes.writeTime.toDate())
-      this.callback(result.error, this.user)
+      console.log('Existing user is logined at: ', new Date())
+      this.callback(null, this.user)
     }
   },
   getUserRefById: function(id, firestore) {
@@ -63,6 +59,15 @@ const User = {
     } catch (e) {
       console.error(e)
     }
+  },
+  updateUser: async function(user, firestore, callback) {
+    const userDocRef = firestore.doc(`users/${user.userId}`)
+    const res = await userDocRef.update(user).catch(err => {
+      console.error(err)
+      callback(err, null)
+    })
+    console.log(res)
+    callback(null, user)
   }
 }
 

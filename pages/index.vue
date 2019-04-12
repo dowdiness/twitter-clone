@@ -9,11 +9,12 @@
       >
         <component
           :is="header"
+          :update-time="updateTime"
           @update:modal="toggleModal = !toggleModal"
           @update:usermodal="toggleUserModal = !toggleUserModal"
         />
         <div class="h-full w-screen lg:w-3/4 mt-20 ml-auto lg:mt-0">
-          <tweet :posts="$store.state.posts" />
+          <tweet :update-time="updateTime" />
         </div>
         <modal
           :toggle-modal="toggleModal"
@@ -22,6 +23,7 @@
         <user-modal
           :toggle-user-modal="toggleUserModal"
           @update:usermodal="toggleUserModal = !toggleUserModal"
+          @update:image="updateImage"
         />
         <button
           v-show="$store.state.auth && isMobile"
@@ -64,10 +66,12 @@ export default {
       width: null,
       isMobile: false,
       isLoading: true,
-      header: null
+      header: null,
+      updateTime: new Date()
     }
   },
   async mounted() {
+    this.updateTime = new Date()
     await this.$store.dispatch('INIT_POSTS')
     this.width = window.innerWidth
     if (this.width < 992) {
@@ -80,6 +84,15 @@ export default {
     window.addEventListener('resize', this.handleResize, 400)
     setTimeout(_ => {
       this.isLoading = false
+      if (this.$route.query.login === 'true') {
+        this.$toast
+          .success('Login successed!', { icon: { name: 'check' } })
+          .goAway(1500)
+      } else if (this.$route.query.logout === 'true') {
+        this.$toast
+          .success('Logout successed!', { icon: { name: 'check' } })
+          .goAway(1500)
+      }
     }, 500)
   },
   beforeDestroy() {
@@ -99,6 +112,9 @@ export default {
           ? 'desktop-header'
           : 'sign-in-header'
       }
+    },
+    updateImage: function() {
+      this.updateTime = new Date()
     }
   }
 }

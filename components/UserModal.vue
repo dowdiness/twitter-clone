@@ -9,7 +9,10 @@
         :class="{ fadeOut: !toggleUserModal }"
         class="fadeIn relative p-4 bg-white w-full max-w-md m-auto flex-col flex shadow-md"
       >
-        <profile @update:usermodal="$emit('update:usermodal')" />
+        <profile
+          @update:usermodal="$emit('update:usermodal')"
+          @update:image="$emit('update:image')"
+        />
       </div>
     </div>
   </transition>

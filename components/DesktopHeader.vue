@@ -8,7 +8,7 @@
     >
       <img
         class="w-24 h-24 rounded-full m-auto object-cover"
-        :src="$store.state.user.avatarUrl"
+        :src="$store.state.user.avatarUrl | addQuery"
       />
       <div class="mx-4 mt-12 font-bold text-center text-xl">
         {{ $store.state.user.displayName }}
@@ -34,3 +34,15 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  filters: {
+    addQuery: function(avatarUrl) {
+      if (!avatarUrl) return ''
+      const isCloudStorage = /^https:\/\/storage.googleapis.com/.test(avatarUrl)
+      return isCloudStorage ? `${avatarUrl}?${new Date().getTime()}` : avatarUrl
+    }
+  }
+}
+</script>
