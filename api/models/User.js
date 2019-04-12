@@ -47,6 +47,15 @@ const User = {
       console.log('New user is created at: ' + setRes.writeTime.toDate())
       this.callback(result.error, this.user)
     } else {
+      const userDocSnap = await firestore
+        .doc(`users/${this.user.userId}`)
+        .get()
+        .catch(err => {
+          console.log(err)
+          this.callback(err, null)
+          console.log('Login is failed at: ', new Date())
+        })
+      this.user = userDocSnap.data()
       console.log('Existing user is logined at: ', new Date())
       this.callback(null, this.user)
     }

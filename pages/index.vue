@@ -9,12 +9,11 @@
       >
         <component
           :is="header"
-          :update-time="updateTime"
           @update:modal="toggleModal = !toggleModal"
           @update:usermodal="toggleUserModal = !toggleUserModal"
         />
         <div class="h-full w-screen lg:w-3/4 mt-20 ml-auto lg:mt-0">
-          <tweet :update-time="updateTime" />
+          <tweet />
         </div>
         <modal
           :toggle-modal="toggleModal"
@@ -66,12 +65,10 @@ export default {
       width: null,
       isMobile: false,
       isLoading: true,
-      header: null,
-      updateTime: new Date()
+      header: null
     }
   },
   async mounted() {
-    this.updateTime = new Date()
     await this.$store.dispatch('INIT_POSTS')
     this.width = window.innerWidth
     if (this.width < 992) {
@@ -112,9 +109,6 @@ export default {
           ? 'desktop-header'
           : 'sign-in-header'
       }
-    },
-    updateImage: function() {
-      this.updateTime = new Date()
     }
   }
 }

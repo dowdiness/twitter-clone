@@ -35,12 +35,6 @@ export default {
       const isCloudStorage = /^https:\/\/storage.googleapis.com/.test(avatarUrl)
       return isCloudStorage ? `${avatarUrl}?${new Date().getTime()}` : avatarUrl
     }
-  },
-  props: {
-    updateTime: {
-      type: Date,
-      default: new Date()
-    }
   }
   /*
   data() {

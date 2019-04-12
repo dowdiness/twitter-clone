@@ -109,12 +109,6 @@ export default {
       return isCloudStorage ? `${avatarUrl}?${new Date().getTime()}` : avatarUrl
     }
   },
-  props: {
-    updateTime: {
-      type: Date,
-      default: new Date()
-    }
-  },
   data() {
     return {
       isPopup: false

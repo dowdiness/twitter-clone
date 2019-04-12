@@ -7,8 +7,9 @@
       class="h-12 m-0 h-auto w-full flex flex-col justify-between items-center"
     >
       <img
-        class="w-24 h-24 rounded-full m-auto object-cover"
+        class="w-24 h-24 rounded-full m-auto object-cover cursor-pointer"
         :src="$store.state.user.avatarUrl | addQuery"
+        @click="$emit('update:usermodal')"
       />
       <div class="mx-4 mt-12 font-bold text-center text-xl">
         {{ $store.state.user.displayName }}

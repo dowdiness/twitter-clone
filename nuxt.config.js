@@ -99,7 +99,8 @@ export default {
           exclude: /(node_modules)/
         })
       }
-    }
+    },
+    extractCSS: true
   },
   router: {
     middleware: 'session'
