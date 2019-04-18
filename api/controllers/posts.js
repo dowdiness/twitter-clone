@@ -114,7 +114,7 @@ router.post('/', multer.single('image'), function(req, res, next) {
 })
 
 /* GET specified id posts. */
-router.get('/:id', function(req, res, next) {
+router.get('/push', function(req, res, next) {
   res.status(200).json({ message: 'hello' })
 })
 

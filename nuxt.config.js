@@ -3,6 +3,7 @@ require('dotenv').config()
 
 export default {
   mode: 'universal',
+  srcDir: 'app/',
 
   /*
    ** Headers of the page
@@ -65,7 +66,12 @@ export default {
   },
   manifest: {
     name: 'sns-example',
-    lang: 'ja'
+    lang: 'ja',
+    gcm_sender_id: '103953800507'
+  },
+  workbox: {
+    importScripts: 'static/firebase-messaging-sw.js',
+    dev: true
   },
   /*
    ** Axios module configuration
@@ -107,7 +113,7 @@ export default {
   },
   serverMiddleware: [
     // API middleware
-    '~/api/app.js'
+    '~/../api/app.js'
   ],
   env: {
     GOOGLE_APPLICATION_CREDENTIALS: '~/appSecret.json',
@@ -117,6 +123,7 @@ export default {
     DATABASEURL: process.env.DATABASEURL,
     PROJECTID: process.env.PROJECTID,
     STORAGEBUCKET: process.env.STORAGEBUCKET,
-    MESSAGINGSENDERID: process.env.MESSAGINGSENDERID
+    MESSAGINGSENDERID: process.env.MESSAGINGSENDERID,
+    FCM_PUBLICKEY: process.env.FCM_PUBLICKEY
   }
 }

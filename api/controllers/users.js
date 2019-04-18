@@ -25,12 +25,7 @@ const bucket = storage.bucket(process.env.GCLOUD_STORAGE_BUCKET)
 
 const router = Router()
 
-/* GET user by ID. */
-router.post('/', multer.single('image'), function(req, res, next) {
-  if (!req.user) {
-    res.status(403).json('Please login before update profile')
-    return
-  }
+router.use('/', multer.single('image'), function(req, res, next) {
   if (req.file) {
     const blob = bucket.file(req.file.originalname)
     const blobStream = blob.createWriteStream()
@@ -46,43 +41,39 @@ router.post('/', multer.single('image'), function(req, res, next) {
       this.user = {
         userId: req.body.userId,
         displayName: req.body.displayName,
-        avatarUrl: avatarUrl
+        avatarUrl: avatarUrl,
+        pushDevices: req.body.pushDevices
       }
-      User.updateUser(this.user, firestore, function(err, createdUser) {
-        if (err) {
-          console.error(err)
-          console.log(createdUser)
-          res.res.status(500).send(err)
-        } else {
-          req.login(createdUser, function(err) {
-            if (err) return next(err)
-            console.log('After relogin: ' + JSON.stringify(req.user))
-            return res.status(200).json(req.user)
-          })
-        }
-      })
+      console.log(this.user)
+      res.locals.user = this.user
+      next()
     })
     blobStream.end(req.file.buffer)
-  } else {
-    this.user = {
-      userId: req.body.userId,
-      displayName: req.body.displayName,
-      avatarUrl: req.user.avatarUrl
-    }
-    User.updateUser(this.user, firestore, function(err, createdUser) {
-      if (err) {
-        console.error(err)
-        console.log(createdUser)
-        res.res.status(500).send(err)
-      } else {
-        req.login(createdUser, function(err) {
-          if (err) return next(err)
-          console.log('After relogin: ' + JSON.stringify(req.user))
-          return res.status(200).json(req.user)
-        })
-      }
-    })
   }
+  res.locals.user = {
+    userId: req.body.userId,
+    displayName: req.body.displayName,
+    avatarUrl: req.user.avatarUrl,
+    pushDevices: req.body.pushDevices
+  }
+  next()
+})
+/* GET user by ID. */
+router.post('/', multer.single('image'), function(req, res, next) {
+  this.user = res.locals.user
+  User.updateUser(this.user, firestore, function(err, createdUser) {
+    if (err) {
+      console.error(err)
+      console.log(createdUser)
+      return res.status(500).send(err)
+    } else {
+      req.login(createdUser, function(err) {
+        if (err) return next(err)
+        console.log('After relogin: ' + JSON.stringify(req.user))
+        return res.status(200).json(req.user)
+      })
+    }
+  })
 })
 
 router.delete('/:id', (req, res, next) => {})
