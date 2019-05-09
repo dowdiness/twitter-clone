@@ -97,6 +97,7 @@ export default {
           .goAway(1500)
       }
     }, 500)
+    // this.$router.replace('/')
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize, 400)

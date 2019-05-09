@@ -34,6 +34,11 @@ export default {
       if (!avatarUrl) return ''
       const isCloudStorage = /^https:\/\/storage.googleapis.com/.test(avatarUrl)
       return isCloudStorage ? `${avatarUrl}?${new Date().getTime()}` : avatarUrl
+    },
+    detectLink: function(text) {
+      if (!text) return ''
+      const urlReg = /((http(s)?(:\/\/))+(www\.)?([\w\-./])*(\.[a-zA-Z]{2,3}\/?))[^\s\b\n|]*[^.,;:?!@^$ -]/g
+      text.replace(urlReg, "<a href='$1' target='_blank'>$1</a>")
     }
   }
 }

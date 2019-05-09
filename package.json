@@ -2,7 +2,7 @@
   "name": "sns-example",
   "version": "1.0.0",
   "description": "My hunky-dory Nuxt.js project",
-  "author": "Koji Ishimoto",
+  "author": "Koji Ishimoto <koji.ishimoto@gmail.com>",
   "private": true,
   "scripts": {
     "analyze": "nuxt build --analyze",
